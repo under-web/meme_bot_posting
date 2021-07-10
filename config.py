@@ -1,2 +1,2 @@
 api_token = ''
-channel = ''
+channel = '@fresh_meme'
