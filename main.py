@@ -25,12 +25,12 @@ def get_id():
             return False
         else:
             if str(result_id) + '\n' in ids:
-                print('id in base!')
+                print(f'id - {result_id} in base!')
                 return True
             else:
                 with open('id.txt', 'a', encoding='utf-8') as file:
                     file.writelines(str(result_id) + '\n')
-                print('not in base i am write id')
+                print(f' id {result_id} not in base i am write!')
                 return False
 
 
@@ -49,7 +49,7 @@ def main():
         if not get_id():
             try:
                 bot.send_photo(channel, grab_top_meme())
-                print(f'отправил {count}')
+                print(f'отправил в канал {count} сообщение')
                 count += 1
                 time.sleep(600)
             except Exception as e:
