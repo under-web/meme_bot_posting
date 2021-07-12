@@ -13,7 +13,7 @@ def get_request_html(url):
     return res
 
 
-def get_id():
+def get_id():  # парсит id для определения актуальности мема
     soup_id = BeautifulSoup(get_request_html(url), 'lxml').find_all('div', class_='cont_item')
     result_id = soup_id[0].get('id')
 
@@ -36,6 +36,10 @@ def get_id():
 
 
 def grab_top_meme():
+    """
+    Парсит картику мем
+    :return: возвращает обьект метода content
+    """
     soup_img = BeautifulSoup(get_request_html(url), 'lxml').find_all('div', class_='content_list')
     for i in soup_img:
         result_link = i.find('img').get('src')
