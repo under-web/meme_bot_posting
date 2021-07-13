@@ -14,6 +14,10 @@ def get_request_html(url):
 
 
 def get_id():  # парсит id для определения актуальности мема
+    """
+    Проверяет есть ли id  в списке файла,
+    :return: если есть ждем когда появится новый, если нет записываем его в базу
+    """
     soup_id = BeautifulSoup(get_request_html(url), 'lxml').find_all('div', class_='cont_item')
     result_id = soup_id[0].get('id')
 
