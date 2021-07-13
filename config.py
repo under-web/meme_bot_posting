@@ -1,2 +1,2 @@
-api_token = '1874181421:AAGzfOphVzYLtOTa5GNAMwIaPzdEsX6Wvqk'
+api_token = ''
 channel = '@fresh_meme'
