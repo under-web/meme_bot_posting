@@ -7,7 +7,7 @@ from config import api_token, channel
 url = 'https://topmemas.top/'
 bot = telebot.TeleBot(api_token)
 
-
+# TODO: переписать с использованием sqlite3
 def get_request_html(url):
     res = requests.get(url).text
     return res
