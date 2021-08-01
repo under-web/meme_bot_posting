@@ -23,21 +23,6 @@ def get_id():  # парсит id для определения актуальн�
     soup_id = BeautifulSoup(get_request_html(url), 'lxml').find_all('div', class_='cont_item')
     result_id = soup_id[0].get('id')
     return result_id
-    # with open('id.txt', 'r', encoding='utf-8') as r_file:
-    #     ids = r_file.readlines()
-    #     if ids is None:
-    #         r_file.writelines(str(result_id) + '\n')
-    #         print('base impty, i am write')
-    #         return False
-    #     else:
-    #         if str(result_id) + '\n' in ids:
-    #             print(f'id - {result_id} in base!')
-    #             return True
-    #         else:
-    #             with open('id.txt', 'a', encoding='utf-8') as file:
-    #                 file.writelines(str(result_id) + '\n')
-    #             print(f' id {result_id} not in base i am write!')
-    #             return False
 
 
 def grab_top_meme():
@@ -54,23 +39,23 @@ def grab_top_meme():
 
 def sql_connection(result_id):
     try:
-        con = sqlite3.connect('id_database.db')
+        con = sqlite3.connect('id_database.db')  # создаем базу и коннект к ней
 
-        cursor = con.cursor()
+        cursor = con.cursor()  #  создаем курсор
 
-        cursor.execute("""CREATE TABLE IF NOT EXISTS id_picture (id TEXT)""")
-        con.commit()
+        cursor.execute("""CREATE TABLE IF NOT EXISTS id_picture (id TEXT)""")  # создаем команду
+        con.commit()  # комитим
 
-        cursor.execute("SELECT id FROM id_picture")
+        cursor.execute("SELECT * FROM id_picture WHERE id = ?", (result_id,))
 
-        if cursor.fetchone() is None:
+        if cursor.fetchone() is None:  # если нет записи с result_id
             cursor.execute("INSERT INTO id_picture VALUES (?)", (result_id,))
             con.commit()
             bot.send_photo(channel, grab_top_meme())
             print(f'отправил сообщение')
             time.sleep(600)
         else:
-            print('Такая запись уже есть')
+            print(f'Такая запись {result_id} уже есть')
             time.sleep(600)
     except Error:
         print(Error)
