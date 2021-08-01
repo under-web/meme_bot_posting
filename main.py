@@ -22,6 +22,7 @@ def get_id():  # парсит id для определения актуальн�
     """
     soup_id = BeautifulSoup(get_request_html(url), 'lxml').find_all('div', class_='cont_item')
     result_id = soup_id[0].get('id')
+    print(f'result_id = {result_id}')
     return result_id
 
 
@@ -38,6 +39,7 @@ def grab_top_meme():
 
 
 def sql_connection(result_id):
+    global con
     try:
         con = sqlite3.connect('id_database.db')  # создаем базу и коннект к ней
 
@@ -52,23 +54,27 @@ def sql_connection(result_id):
             cursor.execute("INSERT INTO id_picture VALUES (?)", (result_id,))
             con.commit()
             bot.send_photo(channel, grab_top_meme())
-            print(f'отправил сообщение')
-            time.sleep(600)
+            print(f'отправил сообщение {result_id}')
+            time.sleep(400)
         else:
             print(f'Такая запись {result_id} уже есть')
-            time.sleep(600)
+            time.sleep(400)
     except Error:
         print(Error)
     finally:
+        con.commit()
         con.close()
 
 
 def main():
 
-    while True:
-        sql_connection(get_id())
-        continue
-
+        while True:
+            try:
+                sql_connection(get_id())
+                continue
+            except Exception as e:
+                print('Error in main func', e)
+                continue
 
 if __name__ == '__main__':
     main()
